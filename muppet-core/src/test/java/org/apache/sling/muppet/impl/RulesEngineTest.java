@@ -71,6 +71,10 @@ public class RulesEngineTest {
     public void parseAndExecute() throws IOException {
         final String rules =
             "test:constant:5:5\n"
+            + "test:constant:5: > 2\n"
+            + "test:constant:5: < 12\n"
+            + "test:constant:5: between 4 and 6\n"
+            + "test:constant:5: between 12 and 21\n"
             + "test:constant:5:42\n"
             + "test:invert:12:-1\n"
             + "test:invert:12:-12\n"
@@ -83,11 +87,16 @@ public class RulesEngineTest {
         e.addRules(p.parse(new StringReader(rules)));
         
         final List<RuleResult> result = e.execute();
-        assertEquals(4, result.size());
+        assertEquals(8, result.size());
         
-        assertResult(result.get(0), RuleResult.Status.OK, "test_constant_5_5");
-        assertResult(result.get(1), RuleResult.Status.ERROR, "test_constant_5_42");
-        assertResult(result.get(2), RuleResult.Status.ERROR, "test_invert_12_-1");
-        assertResult(result.get(3), RuleResult.Status.OK, "test_invert_12_-12");
+        int i=0;
+        assertResult(result.get(i++), RuleResult.Status.OK, "test_constant_5_5");
+        assertResult(result.get(i++), RuleResult.Status.OK, "test_constant_5_> 2");
+        assertResult(result.get(i++), RuleResult.Status.OK, "test_constant_5_< 12");
+        assertResult(result.get(i++), RuleResult.Status.OK, "test_constant_5_between 4 and 6");
+        assertResult(result.get(i++), RuleResult.Status.ERROR, "test_constant_5_between 12 and 21");
+        assertResult(result.get(i++), RuleResult.Status.ERROR, "test_constant_5_42");
+        assertResult(result.get(i++), RuleResult.Status.ERROR, "test_invert_12_-1");
+        assertResult(result.get(i++), RuleResult.Status.OK, "test_invert_12_-12");
     }
 }
