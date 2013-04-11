@@ -25,6 +25,25 @@ import org.apache.sling.muppet.api.RuleResult.Status;
 public class DefaultEvaluator implements Evaluator {
     @Override
     public Status evaluate(SystemAttribute a, String expression) {
-        return expression.equals(a.getValue().toString()) ? RuleResult.Status.OK : RuleResult.Status.ERROR; 
+        final String [] parts = expression.split(" ");
+        boolean matches = false;
+        
+        if(expression.startsWith(">") && parts.length == 2) {
+            matches = Integer.valueOf(a.getValue().toString()).intValue() > Integer.valueOf(parts[1]);
+            
+        } else if(expression.startsWith("<") && parts.length == 2) {
+            matches = Integer.valueOf(a.getValue().toString()).intValue() < Integer.valueOf(parts[1]);
+            
+        } else if(parts.length == 4 && "between".equalsIgnoreCase(parts[0]) && "and".equalsIgnoreCase(parts[2]) ) {
+            final int aValue = Integer.valueOf(a.getValue().toString()).intValue();
+            final int lowerBound = Integer.valueOf(parts[1]);
+            final int upperBound = Integer.valueOf(parts[3]);
+            matches = aValue > lowerBound && aValue < upperBound;
+            
+        } else {
+            matches = expression.equals(a.getValue().toString()); 
+        }
+        
+        return matches ? RuleResult.Status.OK : RuleResult.Status.ERROR;
     }
 }
