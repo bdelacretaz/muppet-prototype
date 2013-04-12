@@ -18,7 +18,7 @@
     <packaging>bundle</packaging>
     <version>0.0.1-SNAPSHOT</version>
 
-    <name>Muppet Core</name>
+    <name>Muppet Rules</name>
     <inceptionYear>2013</inceptionYear>
     
     <description>
