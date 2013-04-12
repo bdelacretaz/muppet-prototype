@@ -25,16 +25,14 @@ import static org.ops4j.pax.exam.CoreOptions.options;
 import static org.ops4j.pax.exam.CoreOptions.provision;
 
 import java.io.IOException;
-import java.io.StringReader;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import org.apache.sling.muppet.api.EvaluationResult;
 import org.apache.sling.muppet.api.MuppetFacade;
 import org.apache.sling.muppet.api.Rule;
 import org.apache.sling.muppet.api.RuleBuilder;
-import org.apache.sling.muppet.api.EvaluationResult;
-import org.apache.sling.muppet.api.RulesEngine;
 import org.apache.sling.muppet.api.SystemAttribute;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -65,21 +63,6 @@ public class MuppetOsgiFacadeTest {
         );
     }
     
-    private void assertResult(EvaluationResult rr, EvaluationResult.Status status, String ruleString) {
-        assertEquals("Expecting " + rr.getRule() + " result to match", status, rr.getStatus());
-        assertEquals("Expecting " + rr.getRule() + " string to match", ruleString, rr.getRule().toString());
-    }
-    
-    private List<EvaluationResult> evaluateRules(String [] rules) throws IOException {
-        final RulesEngine e = facade.getNewRulesEngine();
-        final StringBuilder b = new StringBuilder();
-        for(String line : rules) {
-            b.append(line).append("\n");
-        }
-        e.addRules(facade.parseSimpleTextRules(new StringReader(b.toString())));
-        return e.evaluateRules();
-    }
-    
     @Test
     public void testFacadePresent() {
         assertNotNull("Expecting MuppetFacade service to be provided", facade);
@@ -92,12 +75,12 @@ public class MuppetOsgiFacadeTest {
             "muppet:RuleBuilderCount:> 0",
             "muppet:RuleBuilderCount:> 42"
         };
-        final List<EvaluationResult> r = evaluateRules(rules);
+        final List<EvaluationResult> r = U.evaluateRules(facade, rules);
         
         assertEquals(2, r.size());
         int i=0;
-        assertResult(r.get(i++), EvaluationResult.Status.OK, "Rule: RuleBuilderCount > 0");
-        assertResult(r.get(i++), EvaluationResult.Status.ERROR, "Rule: RuleBuilderCount > 42");
+        U.assertResult(r.get(i++), EvaluationResult.Status.OK, "Rule: RuleBuilderCount > 0");
+        U.assertResult(r.get(i++), EvaluationResult.Status.ERROR, "Rule: RuleBuilderCount > 42");
     }
     
     @Test
@@ -134,18 +117,18 @@ public class MuppetOsgiFacadeTest {
         final ServiceRegistration<?> reg = bundleContext.registerService(RuleBuilder.class.getName(), rb, null);
 
         try {
-            final List<EvaluationResult> r = evaluateRules(rules);
+            final List<EvaluationResult> r = U.evaluateRules(facade, rules);
             assertEquals(4, r.size());
             int i=0;
-            assertResult(r.get(i++), EvaluationResult.Status.OK, "Rule: RuleBuilderCount > 0");
-            assertResult(r.get(i++), EvaluationResult.Status.ERROR, "Rule: RuleBuilderCount > 42");
-            assertResult(r.get(i++), EvaluationResult.Status.OK, "Rule: five 5");
-            assertResult(r.get(i++), EvaluationResult.Status.ERROR, "Rule: five 12");
+            U.assertResult(r.get(i++), EvaluationResult.Status.OK, "Rule: RuleBuilderCount > 0");
+            U.assertResult(r.get(i++), EvaluationResult.Status.ERROR, "Rule: RuleBuilderCount > 42");
+            U.assertResult(r.get(i++), EvaluationResult.Status.OK, "Rule: five 5");
+            U.assertResult(r.get(i++), EvaluationResult.Status.ERROR, "Rule: five 12");
         } finally {
             reg.unregister();
         }
         
-        final List<EvaluationResult> r = evaluateRules(rules);
+        final List<EvaluationResult> r = U.evaluateRules(facade, rules);
         assertEquals("Expecting custom RuleBuilder to be gone", 2, r.size());
     }
 }
