@@ -17,33 +17,18 @@
  */
 package org.apache.sling.muppet.api;
 
-import org.apache.sling.muppet.util.DefaultEvaluator;
+import java.io.IOException;
+import java.io.Reader;
+import java.util.List;
 
-public class Rule {
-    private final SystemAttribute attribute;
-    private final Evaluator evaluator;
-    private final String expression;
+/** Service facade for Muppet */
+public interface MuppetFacade {
+    /** Return a new, empty RulesEngine*/
+    RulesEngine getNewRulesEngine();
     
-    public Rule(SystemAttribute attr, String expression) {
-        this(attr, expression, new DefaultEvaluator());
-    }
+    /** Parse a set of rules defined in our simple text format */
+    List<Rule> parseSimpleTextRules(Reader textRules) throws IOException;
     
-    public Rule(SystemAttribute attr, String expression, Evaluator e) {
-        this.attribute = attr;
-        this.expression = expression;
-        this.evaluator = e;
-    }
-    
-    public SystemAttribute getSystemAttribute() {
-        return attribute;
-    }
-    
-    public RuleResult.Status execute() {
-        return evaluator.evaluate(attribute, expression);
-    }
-    
-    @Override
-    public String toString() {
-        return getClass().getSimpleName() + ": " + attribute + " " + expression;
-    }
+    /** Return our current list of RuleBuilder */
+    List<RuleBuilder> getRuleBuilders();
 }
