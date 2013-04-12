@@ -18,9 +18,9 @@
 package org.apache.sling.muppet.util;
 
 import org.apache.sling.muppet.api.Evaluator;
-import org.apache.sling.muppet.api.RuleResult;
+import org.apache.sling.muppet.api.EvaluationResult;
 import org.apache.sling.muppet.api.SystemAttribute;
-import org.apache.sling.muppet.api.RuleResult.Status;
+import org.apache.sling.muppet.api.EvaluationResult.Status;
 
 public class DefaultEvaluator implements Evaluator {
     @Override
@@ -44,6 +44,6 @@ public class DefaultEvaluator implements Evaluator {
             matches = expression.equals(a.getValue().toString()); 
         }
         
-        return matches ? RuleResult.Status.OK : RuleResult.Status.ERROR;
+        return matches ? EvaluationResult.Status.OK : EvaluationResult.Status.ERROR;
     }
 }

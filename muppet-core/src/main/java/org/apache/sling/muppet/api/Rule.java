@@ -19,6 +19,10 @@ package org.apache.sling.muppet.api;
 
 import org.apache.sling.muppet.util.DefaultEvaluator;
 
+/** Groups a {@link SystemAttribute}, {@link Evaluator} and
+ *  String expression to be able to check that the attribute's
+ *  value matches the supplied expression.
+ */
 public class Rule {
     private final SystemAttribute attribute;
     private final Evaluator evaluator;
@@ -34,11 +38,7 @@ public class Rule {
         this.evaluator = e;
     }
     
-    public SystemAttribute getSystemAttribute() {
-        return attribute;
-    }
-    
-    public RuleResult.Status execute() {
+    public EvaluationResult.Status execute() {
         return evaluator.evaluate(attribute, expression);
     }
     

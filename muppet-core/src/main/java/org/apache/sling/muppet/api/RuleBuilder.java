@@ -17,6 +17,10 @@
  */
 package org.apache.sling.muppet.api;
 
+/** Builds {@link Rule} objects for namespaces and rule names that
+ *  match what this builder expects. Used when parsing rule definition
+ *  files or other rule definition data structures.
+ */
 public interface RuleBuilder {
     Rule buildRule(String namespace, String ruleName, String qualifier, String expression);
 }

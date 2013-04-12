@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.sling.muppet.api.Rule;
-import org.apache.sling.muppet.api.RuleResult;
+import org.apache.sling.muppet.api.EvaluationResult;
 import org.apache.sling.muppet.api.RulesEngine;
 
 public class RulesEngineImpl implements RulesEngine {
@@ -39,10 +39,10 @@ public class RulesEngineImpl implements RulesEngine {
     }
 
     @Override
-    public List<RuleResult> execute() {
-        final List<RuleResult> result = new ArrayList<RuleResult>();
+    public List<EvaluationResult> evaluateRules() {
+        final List<EvaluationResult> result = new ArrayList<EvaluationResult>();
         for(Rule r : rules) {
-            result.add(new RuleResult(r));
+            result.add(new EvaluationResult(r));
         }
         return result;
     }

@@ -22,8 +22,8 @@ import org.apache.sling.muppet.api.SystemAttribute;
 import org.apache.sling.muppet.util.DefaultEvaluator;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
-import static org.apache.sling.muppet.api.RuleResult.Status.OK;
-import static org.apache.sling.muppet.api.RuleResult.Status.ERROR;
+import static org.apache.sling.muppet.api.EvaluationResult.Status.OK;
+import static org.apache.sling.muppet.api.EvaluationResult.Status.ERROR;
 
 public class DefaultEvaluatorTest {
     private final Evaluator evaluator = new DefaultEvaluator();

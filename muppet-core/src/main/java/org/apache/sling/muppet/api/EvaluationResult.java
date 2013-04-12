@@ -17,7 +17,8 @@
  */
 package org.apache.sling.muppet.api;
 
-public class RuleResult {
+/** The result of evaluating a {@link Rule} */
+public class EvaluationResult {
     
     public enum Status {
         OK,
@@ -27,7 +28,7 @@ public class RuleResult {
     private final Status status;
     private final Rule rule;
     
-    public RuleResult(Rule r) {
+    public EvaluationResult(Rule r) {
         rule = r;
         status = r.execute();
     }

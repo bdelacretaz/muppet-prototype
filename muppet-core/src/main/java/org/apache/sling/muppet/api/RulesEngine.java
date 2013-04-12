@@ -19,8 +19,19 @@ package org.apache.sling.muppet.api;
 
 import java.util.List;
 
+/** An engine that stores and evaluates a list of 
+ *  {@link Rule}.
+ */
 public interface RulesEngine {
+    /** Add a rule to this engine */
     void addRule(Rule r);
+    
+    /** Add a list of rules to this engine */
     void addRules(List<Rule> rules);
-    List<RuleResult> execute();
+    
+    /** Evaluate all the current rules.
+     *  TODO: we should use tags on rules to group
+     *  them in sets (performance, configuration etc.)
+     */
+    List<EvaluationResult> evaluateRules();
 }

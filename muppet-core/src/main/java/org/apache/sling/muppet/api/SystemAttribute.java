@@ -17,6 +17,7 @@
  */
 package org.apache.sling.muppet.api;
 
+/** An attribute of the system that's being checked */
 public interface SystemAttribute {
     Object getValue();
 }

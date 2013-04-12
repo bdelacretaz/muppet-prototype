@@ -17,6 +17,7 @@
  */
 package org.apache.sling.muppet.api;
 
+/** Evaluates a String expression on the current value of a {@link SystemAttribute} */ 
 public interface Evaluator {
-    RuleResult.Status evaluate(SystemAttribute a, String expression);
+    EvaluationResult.Status evaluate(SystemAttribute a, String expression);
 }

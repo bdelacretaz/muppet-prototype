@@ -25,7 +25,7 @@ import java.util.List;
 
 import org.apache.sling.muppet.api.Rule;
 import org.apache.sling.muppet.api.RuleBuilder;
-import org.apache.sling.muppet.api.RuleResult;
+import org.apache.sling.muppet.api.EvaluationResult;
 import org.apache.sling.muppet.api.SystemAttribute;
 import org.apache.sling.muppet.util.DefaultEvaluator;
 import org.junit.Test;
@@ -62,7 +62,7 @@ public class RulesEngineTest {
         }
     }
     
-    private void assertResult(RuleResult rr, RuleResult.Status status, String ruleString) {
+    private void assertResult(EvaluationResult rr, EvaluationResult.Status status, String ruleString) {
         assertEquals("Rule " + rr.getRule() + " result matches", rr.getStatus(), status);
         assertEquals("Rule " + rr.getRule() + " string matches", rr.getRule().toString(), ruleString);
     }
@@ -86,17 +86,17 @@ public class RulesEngineTest {
         final RulesEngineImpl e = new RulesEngineImpl();
         e.addRules(p.parse(new StringReader(rules)));
         
-        final List<RuleResult> result = e.execute();
+        final List<EvaluationResult> result = e.evaluateRules();
         assertEquals(8, result.size());
         
         int i=0;
-        assertResult(result.get(i++), RuleResult.Status.OK, "test_constant_5_5");
-        assertResult(result.get(i++), RuleResult.Status.OK, "test_constant_5_> 2");
-        assertResult(result.get(i++), RuleResult.Status.OK, "test_constant_5_< 12");
-        assertResult(result.get(i++), RuleResult.Status.OK, "test_constant_5_between 4 and 6");
-        assertResult(result.get(i++), RuleResult.Status.ERROR, "test_constant_5_between 12 and 21");
-        assertResult(result.get(i++), RuleResult.Status.ERROR, "test_constant_5_42");
-        assertResult(result.get(i++), RuleResult.Status.ERROR, "test_invert_12_-1");
-        assertResult(result.get(i++), RuleResult.Status.OK, "test_invert_12_-12");
+        assertResult(result.get(i++), EvaluationResult.Status.OK, "test_constant_5_5");
+        assertResult(result.get(i++), EvaluationResult.Status.OK, "test_constant_5_> 2");
+        assertResult(result.get(i++), EvaluationResult.Status.OK, "test_constant_5_< 12");
+        assertResult(result.get(i++), EvaluationResult.Status.OK, "test_constant_5_between 4 and 6");
+        assertResult(result.get(i++), EvaluationResult.Status.ERROR, "test_constant_5_between 12 and 21");
+        assertResult(result.get(i++), EvaluationResult.Status.ERROR, "test_constant_5_42");
+        assertResult(result.get(i++), EvaluationResult.Status.ERROR, "test_invert_12_-1");
+        assertResult(result.get(i++), EvaluationResult.Status.OK, "test_invert_12_-12");
     }
 }
