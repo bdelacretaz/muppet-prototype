@@ -27,6 +27,6 @@
     
     <modules>
         <module>muppet-core</module>
-        <module>it-muppet-core</module>
+        <module>it</module>
     </modules>
 </project>

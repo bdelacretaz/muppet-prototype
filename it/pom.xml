@@ -14,11 +14,11 @@
     </parent>
 
     <groupId>org.apache.sling</groupId>
-    <artifactId>org.apache.sling.it-muppet.core</artifactId>
+    <artifactId>org.apache.sling.muppet.it</artifactId>
     <packaging>jar</packaging>
     <version>0.0.1-SNAPSHOT</version>
 
-    <name>Muppet Core Integration Tests</name>
+    <name>Muppet Integration Tests</name>
     <inceptionYear>2013</inceptionYear>
 
     <properties>
