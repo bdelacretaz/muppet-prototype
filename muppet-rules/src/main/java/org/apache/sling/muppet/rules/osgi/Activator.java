@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.sling.muppet.api.RuleBuilder;
+import org.apache.sling.muppet.rules.jmx.JmxBeansRuleBuilder;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
@@ -32,6 +33,7 @@ public class Activator implements BundleActivator {
     public void start(BundleContext ctx) throws Exception {
         regs = new ArrayList<ServiceRegistration>();
         regs.add(ctx.registerService(RuleBuilder.class.getName(), new BundlesRuleBuilder(ctx), null));
+        regs.add(ctx.registerService(RuleBuilder.class.getName(), new JmxBeansRuleBuilder(), null));
     }
 
     public void stop(BundleContext ctx) throws Exception {

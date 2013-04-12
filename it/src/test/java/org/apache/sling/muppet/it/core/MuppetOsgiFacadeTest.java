@@ -19,10 +19,6 @@ package org.apache.sling.muppet.it.core;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.ops4j.pax.exam.CoreOptions.junitBundles;
-import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
-import static org.ops4j.pax.exam.CoreOptions.options;
-import static org.ops4j.pax.exam.CoreOptions.provision;
 
 import java.io.IOException;
 import java.util.List;
@@ -53,14 +49,7 @@ public class MuppetOsgiFacadeTest {
     
     @Configuration
     public Option[] config() {
-        final String coreVersion = System.getProperty("muppet.core.version");
-        
-        return options(
-                junitBundles(),
-                provision(
-                        mavenBundle("org.apache.sling", "org.apache.sling.muppet.core", coreVersion)
-                )
-        );
+        return U.config(false);
     }
     
     @Test

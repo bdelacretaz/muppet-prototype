@@ -18,6 +18,10 @@
 package org.apache.sling.muppet.it.core;
 
 import static org.junit.Assert.assertEquals;
+import static org.ops4j.pax.exam.CoreOptions.junitBundles;
+import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
+import static org.ops4j.pax.exam.CoreOptions.options;
+import static org.ops4j.pax.exam.CoreOptions.provision;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -26,9 +30,31 @@ import java.util.List;
 import org.apache.sling.muppet.api.EvaluationResult;
 import org.apache.sling.muppet.api.MuppetFacade;
 import org.apache.sling.muppet.api.RulesEngine;
+import org.ops4j.pax.exam.Option;
 
 /** Test utilities */
 public class U {
+    
+    static Option[] config(boolean includeRules) {
+        final String coreVersion = System.getProperty("muppet.core.version");
+
+        if(includeRules) {
+            return options(
+                    junitBundles(),
+                    provision(
+                            mavenBundle("org.apache.sling", "org.apache.sling.muppet.core", coreVersion),
+                            mavenBundle("org.apache.sling", "org.apache.sling.muppet.rules", coreVersion)
+                    )
+            );
+        } else {
+            return options(
+                    junitBundles(),
+                    provision(
+                            mavenBundle("org.apache.sling", "org.apache.sling.muppet.core", coreVersion)
+                    )
+            );
+        }
+    }
     
     static List<EvaluationResult> evaluateRules(MuppetFacade facade, String [] rules) throws IOException {
         final RulesEngine e = facade.getNewRulesEngine();

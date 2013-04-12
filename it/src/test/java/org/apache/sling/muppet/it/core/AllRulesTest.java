@@ -26,14 +26,16 @@ import javax.inject.Inject;
 
 import org.apache.sling.muppet.api.EvaluationResult;
 import org.apache.sling.muppet.api.MuppetFacade;
+import org.apache.sling.muppet.api.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Configuration;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.PaxExam;
 
+/** Test our various types of {@link Rule} together */ 
 @RunWith(PaxExam.class)
-public class OsgiRulesTest {
+public class AllRulesTest {
     
     @Inject
     private MuppetFacade facade;
@@ -43,19 +45,21 @@ public class OsgiRulesTest {
         return U.config(true);
     }
     
-    
     @Test
-    public void testBundleStateRules() throws IOException {
+    public void testMixOfRules() throws IOException {
         // There should be at least one rule builder, but not a lot
         final String [] rules = { 
             "osgi:bundle.state:org.apache.sling.muppet.core:active",
             "osgi:bundle.state:some.nonexistenbundle:BUNDLE_NOT_FOUND",
+            "jmxbeans:java.lang#type=ClassLoading:LoadedClassCount:> 100",
+            "muppet:RuleBuilderCount:between 2 and 10"
         };
         final List<EvaluationResult> r = U.evaluateRules(facade, rules);
         
-        assertEquals(2, r.size());
+        assertEquals(4, r.size());
         int i=0;
         U.assertResult(r.get(i++), EvaluationResult.Status.OK, "Rule: bundle.state:org.apache.sling.muppet.core active");
         U.assertResult(r.get(i++), EvaluationResult.Status.OK, "Rule: bundle.state:some.nonexistenbundle BUNDLE_NOT_FOUND");
+        U.assertResult(r.get(i++), EvaluationResult.Status.OK, "Rule: java.lang:type=ClassLoading:LoadedClassCount > 100");
     }
 }
